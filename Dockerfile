@@ -10,15 +10,15 @@
 ##
 # Actually, I use passenger-full that already has python
 # https://github.com/phusion/passenger-docker#using
-FROM phusion/passenger-customizable:0.9.34
+FROM phusion/passenger-customizable:1.0.1
 
 MAINTAINER Materials Cloud <developers@materialscloud.org>
 
+# Everything will be run as root
+USER root
+
 # Set correct environment variables.
 ENV HOME /root
-
-# Use baseimage-docker's init system.
-CMD ["/sbin/my_init"]
 
 # If you're using the 'customizable' variant, you need to explicitly opt-in
 # for features. Uncomment the features you want:
@@ -52,15 +52,6 @@ ENV HOME /home/app
 # Run this as sudo to replace the version of pip
 RUN pip3 install -U 'pip>=10' setuptools wheel
 
-# install rest of the packages as normal user (app, provided by passenger)
-USER app
-
-WORKDIR /home/app/code
-
-# Go back to root.
-# Also, it should remain as user root for startup
-USER root
-
 # Setup apache
 # Disable default apache site, enable tools site; also
 # enable needed modules
@@ -70,6 +61,7 @@ RUN a2enmod wsgi && a2enmod xsendfile && \
 
 # Activate apache at startup
 RUN mkdir /etc/service/apache
+RUN mkdir /var/run/apache2
 ADD ./.docker_files/apache_run.sh /etc/service/apache/run
 
 # Web
@@ -93,9 +85,12 @@ RUN echo "import sys" > $SP_WSGI_FILE && \
     echo "sys.path.insert(0, '/home/app/code/webservice')" >> $SP_WSGI_FILE && \
     echo "from run_app import app as application" >> $SP_WSGI_FILE 
 
-# Set proper permissions
-RUN chown -R app:app $HOME
 
+# Set proper permissions for user 'app' who will be used to run the service
+RUN chown -R app:app $HOME
 
 # Final cleanup, in case it's needed
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Use baseimage-docker's init system.
+CMD ["/sbin/my_init"]

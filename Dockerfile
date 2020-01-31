@@ -12,7 +12,7 @@
 # https://github.com/phusion/passenger-docker#using
 FROM phusion/passenger-customizable:1.0.1
 
-MAINTAINER Materials Cloud <developers@materialscloud.org>
+LABEL maintainer="Materials Cloud <developers@materialscloud.org>"
 
 # Everything will be run as root
 USER root

@@ -31,7 +31,7 @@ on the left side of the figure below) can be extended to develop a new tool call
 
 |                                            Tools barebone template                                             |                                               New tool template                                               |
 | :------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: |
-| ![](https://github.com/materialscloud-org/tools-barebone/blob/master/webservice/static/img/tools-barebone.png) | ![](https://github.com/materialscloud-org/tools-barebone/blob/master/webservice/static/img/tools-example.png) |
+| ![](https://github.com/materialscloud-org/tools-barebone/blob/master/misc/screenshots/tools-barebone.png) | ![](https://github.com/materialscloud-org/tools-barebone/blob/master/misc/screenshots/tools-example.png) |
 
 ### 1. Create a parent directory which will contain both the `tools-barebone` and `custom-tool` directories
 

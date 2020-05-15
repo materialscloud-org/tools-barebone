@@ -1,7 +1,6 @@
 # tools-barebone
 
 [![Actions Status](https://github.com/materialscloud-org/tools-barebone/workflows/Docker%20Image%20Build%20CI/badge.svg)](https://github.com/materialscloud-org/tools-barebone/actions)
-[![Actions Status](https://github.com/materialscloud-org/tools-barebone/workflows/Publish%20Docker/badge.svg)](https://github.com/materialscloud-org/tools-barebone/actions)
 
 
 `tools-barebone` is a framework to develop and deploy small web apps,

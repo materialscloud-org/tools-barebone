@@ -10,7 +10,7 @@
 ##
 # Actually, I use passenger-full that already has python
 # https://github.com/phusion/passenger-docker#using
-FROM phusion/passenger-customizable:1.0.1
+FROM phusion/passenger-customizable:1.0.9
 
 LABEL maintainer="Materials Cloud <developers@materialscloud.org>"
 
@@ -24,7 +24,7 @@ ENV HOME /root
 # for features. Uncomment the features you want:
 #
     #   Build system and git.
-    #   Python support (2.7 and 3.x - it is 3.5.x in this ubuntu 16.04)
+    #   Python support (2.7 and 3.x - it is 3.6.x in this ubuntu 18.04)
 RUN /pd_build/utilities.sh && \
     /pd_build/python.sh 
 

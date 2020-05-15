@@ -6,32 +6,19 @@ If you just want to try it out, just run this file and connect to
 http://localhost:5000 from a browser. Otherwise, read the instructions
 in README_DEPLOY.md to deploy on a Apache server.
 """
-from __future__ import unicode_literals
-from future import standard_library
-standard_library.install_aliases()
-
 import flask
 import os
+import traceback
 
-from web_module import (ReverseProxied, static_bp, user_static_bp, get_secret_key, get_config)
-from conf import (FlaskRedirectException, ConfigurationError, static_folder)
+from web_module import static_bp, user_static_bp, get_secret_key, get_config
+from tools_barebone import get_style_version, ReverseProxied
+from conf import static_folder
 
-# This (undocumented) flag changes the style of the webpage (CSS, etc.)
-# and decides whether some of the headers (e.g. the App title) and the
-# description of what app can do should appear or not
-#
-# Options:
-# - 'lite': simple version, not title, no info description, different CSS
-# - anything else: default
-#
-# How to pass: with Apache, when forwarding, in a ReverseProxy section, add
-#   RequestHeader set X-App-Style lite
-def get_style_version(request):
-    return request.environ.get("HTTP_X_APP_STYLE", "")
+import logging
+import logging.handlers
 
-import logging, logging.handlers
+## Logging condfiguration
 logger = logging.getLogger("tools-app")
-
 logHandler = logging.handlers.TimedRotatingFileHandler(
     os.path.join(
         os.path.split(os.path.realpath(__file__))[0], 'logs', 'requests.log'),
@@ -51,8 +38,7 @@ app.secret_key = get_secret_key()
 def get_visualizer_select_template(request):
     if get_style_version(request) == 'lite':
         return 'visualizer_select_lite.html'
-    else:
-        return 'visualizer_select.html'
+    return 'visualizer_select.html'
 
 @app.route('/')
 def input_data():
@@ -61,11 +47,26 @@ def input_data():
     """
     return flask.render_template(get_visualizer_select_template(flask.request), **get_config())
 
+
 # Register blueprints
 app.register_blueprint(static_bp)
 app.register_blueprint(user_static_bp)
 
-from compute import blueprint
+exception_message = ""
+
+try:
+    from compute import blueprint
+except ImportError:
+    exception_traceback = traceback.format_exc()
+    blueprint = flask.Blueprint('compute', __name__, url_prefix='/compute')
+
+    @blueprint.route('/process_structure/', methods=['GET', 'POST'])
+    def process_structure():
+        """Template view, should be replaced when extending tools-barebone."""
+        global exception_traceback
+        flask.flash("This is tools-barebone. You need to define a blueprint in a compute submodule. Import error traceback:\n{}".format(exception_traceback))
+        return flask.redirect(flask.url_for('input_data'))
+
 app.register_blueprint(blueprint)
 
 

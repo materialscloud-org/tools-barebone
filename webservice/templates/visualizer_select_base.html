@@ -63,7 +63,7 @@
     {% block flashedmessages %}
         {% with messages = get_flashed_messages() %}
             {% if messages %}
-                <div class="alert alert-danger">
+                <div id="warnings" class="alert alert-danger">
                     Warning:
                     <ul class="flashes">
                         {% for message in messages %}
@@ -96,7 +96,7 @@
         </div>
     </div>
 
-    {% if config.get("use_upload_structure_block", False) %} 
+    {% if config.get("use_upload_structure_block", True) %} 
       {% include "visualizer_select_structure.html" %}
     {% endif %}
     {% include include_pages['select_content'] %}

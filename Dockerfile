@@ -77,6 +77,11 @@ WORKDIR $HOME/code/
 COPY ./requirements.txt requirements.txt
 RUN pip3 install -r $HOME/code/requirements.txt
 
+COPY ./setup.py setup.py
+COPY README.md README.md
+COPY ./tools_barebone/ tools_barebone
+RUN pip3 install -e .
+
 # Actually, don't download, but get the code directly from this repo
 COPY ./webservice/ webservice
 # Create a proper wsgi file file

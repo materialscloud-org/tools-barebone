@@ -1,0 +1,41 @@
+#
+# Experimental lattice parameters of quartz
+# Gualtieri, A.F. 	Journal of Applied Crystallography (2000) 33, 267-278
+#
+%BLOCK lattice_abc
+4.9158 4.9158 5.4091
+90.0   90.0   120.0
+%ENDBLOCK lattice_abc
+
+%BLOCK positions_frac
+Si        0.5303000000000000  0.0000000000000000  0.3333000000000000
+Si        0.0000000000000000  0.5303000000000000  0.6666299999999999
+Si        0.4697000000000000  0.4697000000000000  0.9999700000000000
+O         0.1462000000000000  0.4142000000000000  0.8810000000000000
+O         0.7320000000000000  0.5858000000000000  0.7856700000000000
+O         0.5858000000000000  0.7320000000000000  0.2143300000000000
+O         0.2680000000000000  0.8538000000000000  0.5476700000000000
+O         0.4142000000000000  0.1462000000000000  0.1190000000000000
+O         0.8538000000000000  0.2680000000000000  0.4523300000000000
+%ENDBLOCK positions_frac
+!
+! Choose which pseudopotentials to use
+! Either specify external files, or omit to generate a pseudopotential
+!
+%BLOCK species_pot
+Si Si_00.usp
+O  O_00.usp
+%ENDBLOCK species_pot
+!
+! Analyse structure to determine symmetry
+!
+symmetry_generate
+!
+! Specify M-P grid dimensions for electron wavevectors (K-points)
+!
+kpoint_mp_grid 3 3 2
+!
+! Offset the grid in the xy plane to include (0,0,0)
+!
+!kpoint_mp_offset 0.125 0.125 0.000
+

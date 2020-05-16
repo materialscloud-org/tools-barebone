@@ -7,11 +7,14 @@ http://localhost:5000 from a browser. Otherwise, read the instructions
 in README_DEPLOY.md to deploy on a Apache server.
 """
 import flask
+import io
+import json
 import os
 import traceback
 
 from web_module import static_bp, user_static_bp, get_secret_key, get_config
 from tools_barebone import get_style_version, ReverseProxied
+from tools_barebone.structure_importers import get_structure_tuple, UnknownFormatError
 from conf import static_folder
 
 import logging
@@ -64,6 +67,38 @@ except ImportError:
     def process_structure():
         """Template view, should be replaced when extending tools-barebone."""
         global exception_traceback
+
+        if flask.request.method == 'POST':
+            # check if the post request has the file part
+            if 'structurefile' not in flask.request.files:
+                return flask.redirect(flask.url_for('input_data'))
+            structurefile = flask.request.files['structurefile']
+            fileformat = flask.request.form.get('fileformat', 'unknown')
+            filecontent = structurefile.read().decode('utf-8')
+            fileobject = io.StringIO(str(filecontent))
+            form_data = dict(flask.request.form)
+            try:
+                structure_tuple = get_structure_tuple(fileobject,
+                                                      fileformat,
+                                                      extra_data=form_data)
+            except UnknownFormatError:
+                flask.flash("Unknown format '{}'".format(fileformat))
+                return flask.redirect(flask.url_for('input_data'))
+            except Exception:
+                flask.flash("I tried my best, but I wasn't able to load your "
+                    "file in format '{}'...".format(fileformat))
+                return flask.redirect(flask.url_for('input_data')) 
+            data_for_template = {
+                "structure_json": json.dumps({
+                    'cell': structure_tuple[0],
+                    'atoms': structure_tuple[1],
+                    'numbers': structure_tuple[2]
+                }, indent=2, sort_keys=True),
+                "exception_traceback": exception_traceback
+            }   
+            return flask.render_template('tools_barebone.html', **data_for_template)
+        
+        # GET request
         flask.flash("This is tools-barebone. You need to define a blueprint in a compute submodule. Import error traceback:\n{}".format(exception_traceback))
         return flask.redirect(flask.url_for('input_data'))
 

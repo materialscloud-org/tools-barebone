@@ -10,11 +10,11 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Install system dependencies
-      # remove occasionally problematic repositories we don't use anyway
-      run: |
-        sudo rm -f /etc/apt/sources.list.d/dotnetdev.list /etc/apt/sources.list.d/microsoft-prod.list
-        sudo apt update
-        sudo apt install chromium-browser chromium-chromedriver
+        # remove occasionally problematic repositories we don't use anyway
+        run: |
+          sudo rm -f /etc/apt/sources.list.d/dotnetdev.list /etc/apt/sources.list.d/microsoft-prod.list
+          sudo apt update
+          sudo apt install chromium-browser chromium-chromedriver
 
       - name: Build the Docker image
         run: ./admin-tools/build-docker.sh && ./admin-tools/run-docker.sh &&  ./.ci/wait-for-it.sh localhost:8090 -t 120 && sleep 5 && pytest --driver Chrome

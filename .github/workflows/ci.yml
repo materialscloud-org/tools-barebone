@@ -36,6 +36,11 @@ jobs:
           sudo apt update
           sudo apt install chromium-browser chromium-chromedriver
 
+      - name: Set up Python 3.6
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.6
+
       - name: Install python dependencies (pytest, etc.)
         run: |
           pip install -e .[dev]

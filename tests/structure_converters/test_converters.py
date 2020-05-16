@@ -2,6 +2,7 @@ import json
 import os
 
 import pytest
+import numpy as np
 
 from selenium.webdriver.support.ui import Select
 from urllib.parse import urlparse
@@ -111,7 +112,7 @@ def submit_structure(selenium, file_abspath, parser_name):
 
 @pytest.mark.nondestructive
 @pytest.mark.parametrize("parser_name, file_relpath", get_file_examples("valid"))
-def test_send_valid_structure(selenium, data_regression, parser_name, file_relpath):
+def test_send_valid_structure(selenium, num_regression, parser_name, file_relpath):
     """Test submitting various files."""
     selenium.get(TEST_URL)
 
@@ -126,7 +127,13 @@ def test_send_valid_structure(selenium, data_regression, parser_name, file_relpa
 
     structure_json = selenium.find_element_by_id("structureJson").text
     structure_data = json.loads(structure_json)
-    data_regression.check(structure_data)
+    # Only 1D arrays are allowed, I flatten them (order is preserved). Also, convert to float as the
+    # library does not manage well integers
+    data_dict = {
+        key: np.array(val).flatten().astype(float)
+        for key, val in structure_data.items()
+    }
+    num_regression.check(data_dict, default_tolerance=dict(atol=1e-7, rtol=1e-14))
 
 
 @pytest.mark.nondestructive

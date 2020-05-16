@@ -42,9 +42,8 @@ setup(
     extras_require={
         "dev": [
             "pre-commit>=1.4",
-            "yapf==0.29.0",
+            "pylint==2.4.4",
             "prospector>=0.12.7",
-            "pylint>=1.8",
             "pytest==5.3.5",
             "pytest-selenium==1.17.0",
             "pytest-regressions==2.0.0",

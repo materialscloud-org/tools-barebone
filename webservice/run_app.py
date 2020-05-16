@@ -23,11 +23,10 @@ import logging.handlers
 ## Logging condfiguration
 logger = logging.getLogger("tools-app")
 logHandler = logging.handlers.TimedRotatingFileHandler(
-    os.path.join(
-        os.path.split(os.path.realpath(__file__))[0], 'logs', 'requests.log'),
-    when='midnight')
-formatter = logging.Formatter(
-    '[%(asctime)s]%(levelname)s-%(funcName)s ^ %(message)s')
+    os.path.join(os.path.split(os.path.realpath(__file__))[0], "logs", "requests.log"),
+    when="midnight",
+)
+formatter = logging.Formatter("[%(asctime)s]%(levelname)s-%(funcName)s ^ %(message)s")
 logHandler.setFormatter(formatter)
 logger.addHandler(logHandler)
 logger.setLevel(logging.DEBUG)
@@ -38,17 +37,21 @@ app.use_x_sendfile = True
 app.wsgi_app = ReverseProxied(app.wsgi_app)
 app.secret_key = get_secret_key()
 
-def get_visualizer_select_template(request):
-    if get_style_version(request) == 'lite':
-        return 'visualizer_select_lite.html'
-    return 'visualizer_select.html'
 
-@app.route('/')
+def get_visualizer_select_template(request):
+    if get_style_version(request) == "lite":
+        return "visualizer_select_lite.html"
+    return "visualizer_select.html"
+
+
+@app.route("/")
 def input_data():
     """
     Main view, input data selection and upload
     """
-    return flask.render_template(get_visualizer_select_template(flask.request), **get_config())
+    return flask.render_template(
+        get_visualizer_select_template(flask.request), **get_config()
+    )
 
 
 # Register blueprints
@@ -61,46 +64,57 @@ try:
     from compute import blueprint
 except ImportError:
     exception_traceback = traceback.format_exc()
-    blueprint = flask.Blueprint('compute', __name__, url_prefix='/compute')
+    blueprint = flask.Blueprint("compute", __name__, url_prefix="/compute")
 
-    @blueprint.route('/process_structure/', methods=['GET', 'POST'])
+    @blueprint.route("/process_structure/", methods=["GET", "POST"])
     def process_structure():
         """Template view, should be replaced when extending tools-barebone."""
         global exception_traceback
 
-        if flask.request.method == 'POST':
+        if flask.request.method == "POST":
             # check if the post request has the file part
-            if 'structurefile' not in flask.request.files:
-                return flask.redirect(flask.url_for('input_data'))
-            structurefile = flask.request.files['structurefile']
-            fileformat = flask.request.form.get('fileformat', 'unknown')
-            filecontent = structurefile.read().decode('utf-8')
+            if "structurefile" not in flask.request.files:
+                return flask.redirect(flask.url_for("input_data"))
+            structurefile = flask.request.files["structurefile"]
+            fileformat = flask.request.form.get("fileformat", "unknown")
+            filecontent = structurefile.read().decode("utf-8")
             fileobject = io.StringIO(str(filecontent))
             form_data = dict(flask.request.form)
             try:
-                structure_tuple = get_structure_tuple(fileobject,
-                                                      fileformat,
-                                                      extra_data=form_data)
+                structure_tuple = get_structure_tuple(
+                    fileobject, fileformat, extra_data=form_data
+                )
             except UnknownFormatError:
                 flask.flash("Unknown format '{}'".format(fileformat))
-                return flask.redirect(flask.url_for('input_data'))
+                return flask.redirect(flask.url_for("input_data"))
             except Exception:
-                flask.flash("I tried my best, but I wasn't able to load your "
-                    "file in format '{}'...".format(fileformat))
-                return flask.redirect(flask.url_for('input_data')) 
+                flask.flash(
+                    "I tried my best, but I wasn't able to load your "
+                    "file in format '{}'...".format(fileformat)
+                )
+                return flask.redirect(flask.url_for("input_data"))
             data_for_template = {
-                "structure_json": json.dumps({
-                    'cell': structure_tuple[0],
-                    'atoms': structure_tuple[1],
-                    'numbers': structure_tuple[2]
-                }, indent=2, sort_keys=True),
-                "exception_traceback": exception_traceback
-            }   
-            return flask.render_template('tools_barebone.html', **data_for_template)
-        
+                "structure_json": json.dumps(
+                    {
+                        "cell": structure_tuple[0],
+                        "atoms": structure_tuple[1],
+                        "numbers": structure_tuple[2],
+                    },
+                    indent=2,
+                    sort_keys=True,
+                ),
+                "exception_traceback": exception_traceback,
+            }
+            return flask.render_template("tools_barebone.html", **data_for_template)
+
         # GET request
-        flask.flash("This is tools-barebone. You need to define a blueprint in a compute submodule. Import error traceback:\n{}".format(exception_traceback))
-        return flask.redirect(flask.url_for('input_data'))
+        flask.flash(
+            "This is tools-barebone. You need to define a blueprint in a compute submodule. Import error traceback:\n{}".format(
+                exception_traceback
+            )
+        )
+        return flask.redirect(flask.url_for("input_data"))
+
 
 app.register_blueprint(blueprint)
 

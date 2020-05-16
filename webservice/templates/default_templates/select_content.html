@@ -2,7 +2,7 @@
 <h3>Crystal structure inputs</h3>
 <p>If you do not need the file selection box above, set
     <code>use_upload_structure_block: false</code> in the <code>config.yaml</code> file.
-    Otherwise, to use it, define a <code>blueprint</code> in your <code>compute</code> module, using the following code: 
+    Otherwise, to use it, define a <code>blueprint</code> in your <code>compute</code> module, using the following code:
     <pre>
         import flask
         blueprint = flask.Blueprint('compute', __name__, url_prefix='/compute')
@@ -16,7 +16,7 @@
         from tools_barebone.structure_importers import get_structure_tuple, UnknownFormatError
 
         @blueprint.route('/process_structure/', methods=['GET', 'POST'])
-        def process_structure():    
+        def process_structure():
             if flask.request.method == 'POST':
                 # check if the post request has the file part
                 if 'structurefile' not in flask.request.files:
@@ -36,11 +36,11 @@
                 except Exception:
                     flask.flash("I tried my best, but I wasn't able to load your "
                         "file in format '{}'...".format(fileformat))
-                    return flask.redirect(flask.url_for('input_data')) 
+                    return flask.redirect(flask.url_for('input_data'))
                 data_for_template = {
                     # Generate data here based on the structure_tuple and what
                     # you want to do in your application
-                }   
+                }
                 # Create first a HTML template using the Jinja2 syntax
                 return flask.render_template('user_templates/MYTEMPLATE.html', **data_for_template)
     </pre>

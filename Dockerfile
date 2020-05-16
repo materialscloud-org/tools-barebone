@@ -3,7 +3,7 @@
 # to `latest`! See
 # https://github.com/phusion/baseimage-docker/blob/master/Changelog.md
 # for a list of version numbers.
-# Note also that we use phusion because, as explained on the 
+# Note also that we use phusion because, as explained on the
 # http://phusion.github.io/baseimage-docker/ page, it automatically
 # contains and starts all needed services (like logging), it
 # takes care of sending around signals when stopped, etc.
@@ -26,7 +26,7 @@ ENV HOME /root
     #   Build system and git.
     #   Python support (2.7 and 3.x - it is 3.6.x in this ubuntu 18.04)
 RUN /pd_build/utilities.sh && \
-    /pd_build/python.sh 
+    /pd_build/python.sh
 
 ##########################################
 ############ Installation Setup ##########
@@ -34,7 +34,7 @@ RUN /pd_build/utilities.sh && \
 
 # Install required software
 
-# Install Apache 
+# Install Apache
 # (nginx doesn't have the X-Sendfile support that we want to use)
 ## NOTE: Here and below we install everything with python3
 RUN apt-get update \
@@ -57,7 +57,7 @@ RUN pip3 install -U 'pip>=10' setuptools wheel
 # enable needed modules
 ADD ./.docker_files/apache-site.conf /etc/apache2/sites-available/app.conf
 RUN a2enmod wsgi && a2enmod xsendfile && \
-    a2dissite 000-default && a2ensite app 
+    a2dissite 000-default && a2ensite app
 
 # Activate apache at startup
 RUN mkdir /etc/service/apache
@@ -88,7 +88,7 @@ COPY ./webservice/ webservice
 ENV SP_WSGI_FILE=webservice/app.wsgi
 RUN echo "import sys" > $SP_WSGI_FILE && \
     echo "sys.path.insert(0, '/home/app/code/webservice')" >> $SP_WSGI_FILE && \
-    echo "from run_app import app as application" >> $SP_WSGI_FILE 
+    echo "from run_app import app as application" >> $SP_WSGI_FILE
 
 
 # Set proper permissions for user 'app' who will be used to run the service

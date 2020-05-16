@@ -18,5 +18,5 @@ then
    echo "$NEW_PASSWORD" > "$SECRET_KEY_FILE"
    chown app:app "$SECRET_KEY_FILE"
    chmod 600 "$SECRET_KEY_FILE"
-   
+
 fi

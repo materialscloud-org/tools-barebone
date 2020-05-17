@@ -215,6 +215,7 @@ If you are using the structure upload block (see comments in the description of 
 
 ```python
 from tools_barebone.structure_importers import get_structure_tuple, UnknownFormatError
+import io
 
 @blueprint.route("/process_structure/", methods=["POST"])
 def process_structure():

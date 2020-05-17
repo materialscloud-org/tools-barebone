@@ -1,5 +1,5 @@
 body {
-    margin: 0; 
+    margin: 0;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 14px;
     font-style: normal;
@@ -66,7 +66,7 @@ pre {
 }
 
 table.center {
-    margin-left:auto; 
+    margin-left:auto;
     margin-right:auto;
   }
 

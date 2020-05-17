@@ -1,5 +1,53 @@
 <div class="alert alert-warning">
-<p>You need to add forms to <code>select_content</code> to replace this empty placeholder.</p>
+<h3>Crystal structure inputs</h3>
+<p>If you do not need the file selection box above, set
+    <code>use_upload_structure_block: false</code> in the <code>config.yaml</code> file.
+    Otherwise, to use it, define a <code>blueprint</code> in your <code>compute</code> module, using the following code:
+    <pre>
+        import flask
+        blueprint = flask.Blueprint('compute', __name__, url_prefix='/compute')
+    </pre>
+</p>
+
+<p>
+    Then, you should define at least the following route:
+    <pre>
+        import io
+        from tools_barebone.structure_importers import get_structure_tuple, UnknownFormatError
+
+        @blueprint.route('/process_structure/', methods=['GET', 'POST'])
+        def process_structure():
+            if flask.request.method == 'POST':
+                # check if the post request has the file part
+                if 'structurefile' not in flask.request.files:
+                    return flask.redirect(flask.url_for('input_data'))
+                structurefile = flask.request.files['structurefile']
+                fileformat = flask.request.form.get('fileformat', 'unknown')
+                filecontent = structurefile.read().decode('utf-8')
+                fileobject = io.StringIO(str(filecontent))
+                form_data = dict(flask.request.form)
+                try:
+                    structure_tuple = get_structure_tuple(fileobject,
+                                                          fileformat,
+                                                          extra_data=form_data)
+                except UnknownFormatError:
+                    flask.flash("Unknown format '{}'".format(fileformat))
+                    return flask.redirect(flask.url_for('input_data'))
+                except Exception:
+                    flask.flash("I tried my best, but I wasn't able to load your "
+                        "file in format '{}'...".format(fileformat))
+                    return flask.redirect(flask.url_for('input_data'))
+                data_for_template = {
+                    # Generate data here based on the structure_tuple and what
+                    # you want to do in your application
+                }
+                # Create first a HTML template using the Jinja2 syntax
+                return flask.render_template('user_templates/MYTEMPLATE.html', **data_for_template)
+    </pre>
+</p>
+
+<h3>Additional inputs</h3>
+<p>You need to add HTML forms to <code>select_content</code> to replace this empty placeholder.</p>
 <p>In the config file, create a <code>templates</code> dictionary,
     if not yet there, and set the variable <code>select_content</code> to point
     to you custom template:

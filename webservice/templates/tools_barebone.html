@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Bootstrap -->
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../../static/css/jquery-ui.1.12.1.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/visualizer_base.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/visualizer_input.min.css"/>
+    <script src="../../static/js/jquery-3.1.0.min.js"></script>
+    <script src="../../static/js/jquery-ui.1.12.1.min.js"></script>
+
+    <title>Tools-Barebone minimal structure return page</title>
+
+    <script src="../../static/js/iframeResizer.contentWindow.min.js"></script>
+</head>
+
+<body>
+<div id='container'>
+    <div id='maintitle'>
+        <h1 style="text-align: center;">Tools-Barebone minimal structure return page</h1>
+    </div>
+
+    <h2>Your task: implement the needed logic for your tool</h2>
+    <p>This is tools-barebone. You need to define a blueprint in a compute submodule. Import error traceback:</p>
+    <p>
+        <code id='exceptionTraceback'>
+        {{exception_traceback}}
+        </code>
+    </p>
+
+    <h2>Successfully parsed structure tuple</h2>
+    <p>
+        <code id='structureJson'>
+{{structure_json}}
+        </code>
+    </p>
+
+
+</div>
+
+<div style ="position: relative" data-iframe-height></div>
+</body>
+</html>

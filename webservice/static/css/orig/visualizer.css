@@ -1,5 +1,5 @@
 body {
-    margin: 0; 
+    margin: 0;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 14px;
     font-style: normal;
@@ -14,8 +14,8 @@ html {
 }
 
 canvas { /* For ThreeJS */
-width: 100%; 
-height: 100% 
+width: 100%;
+height: 100%
 }
 
 .ui-accordion-content > h3 {
@@ -32,7 +32,7 @@ height: 100%
 #maintitle {
     background-color: #fff;
     margin: 0px;
-    padding: 0px;    
+    padding: 0px;
     top: 0px;
     right: 2%;
     text-align: center;
@@ -121,7 +121,7 @@ height: 100%
     height: 450px;
     margin: 0px;
     padding: 0px;
-    position: relative; 
+    position: relative;
     top: 0px;
     left: 0%;
     overflow: visible;
@@ -145,7 +145,7 @@ height: 100%
     position: relative;
     top: 0px;
     text-align: center;
-} 
+}
 
 #structure {
     background-color: #fff;
@@ -154,11 +154,11 @@ height: 100%
     border: 1px solid #bbb;
     margin: 0px;
     padding: 0px;
-    position: relative; 
+    position: relative;
     top: 0px;
     left: 0%;
     overflow: hidden;
-} 
+}
 
 @media screen and (max-width: 900px) {
     #structure {
@@ -182,7 +182,7 @@ height: 100%
     width: 47%;
     margin: 0px;
     padding: 0px;
-    border: 1px solid #bbb; 
+    border: 1px solid #bbb;
     top: 0px;
     margin-left: 2%;
     text-align: center;
@@ -194,8 +194,8 @@ height: 100%
     background-color: #fff;
     width: 47%;
     margin: 0px;
-    border: 1px solid #bbb; 
-    padding: 0px;    
+    border: 1px solid #bbb;
+    padding: 0px;
     margin-right: 2%;
     text-align: center;
     float:right;
@@ -244,7 +244,7 @@ height: 100%
     padding-top: 20px;
     margin-left: 2%;
     margin-right: 2%;
-} 
+}
 
 .clipboardbtn {
 osition: relative;
@@ -269,21 +269,21 @@ border-radius: 3px;
     padding-top: 20px;
     margin-left: 2%;
     margin-right: 2%;
-} 
+}
 
 #rawcode {
     clear: both;
     padding-top: 20px;
     margin-left: 2%;
     margin-right: 2%;
-} 
+}
 
 #finalinfo {
     clear: both;
     padding-top: 20px;
     margin-left: 2%;
     margin-right: 2%;
-} 
+}
 
 #info {
     top: 95px;

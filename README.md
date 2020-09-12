@@ -364,7 +364,7 @@ and create a file `upload_structure_additional_content.html` in the `user_templa
 An example based on `tools-barebone`, with additional Python backend functionality, is provided in the
 [tools-example](https://github.com/materialscloud-org/tools-example) tool.
 
-For a more advanced tool, you can also check out the [tools-seekpath](https://github.com/materialscloud-org/tools-seekpath) tool.
+For a more advanced tool, you can also check out the [tools-seekpath](https://github.com/materialscloud-org/tools-seekpath) tool or the [tools-phonon-dispersion](https://github.com/materialscloud-org/tools-phonon-dispersion), for instance.
 
 Here you can see also an example of how the python code in the backend is implemented (check the implementation of the API endpoints inside the `compute` subfolder).
 You can also get inspiration for the setup of tests with pytest, of continuous integration with GitHub actions, on how to setup pre-commit hooks, etc.

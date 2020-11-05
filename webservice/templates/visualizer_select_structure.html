@@ -17,14 +17,19 @@
                 </div>
                 <div class='col-sm-6'>
                     <select name="fileformat" id="fileformatSelect">
-                        <option value="qeinp-qetools">Quantum ESPRESSO input [parser: qe-tools]</option>
-                        <option value="vasp-ase">VASP POSCAR [parser: ase]</option>
-                        <option value="xsf-ase">XCrySDen (.xsf) [parser: ase]</option>
-                        <option value="castep-ase">CASTEP (.cell) [parser: ase]</option>
-                        <option value="pdb-ase">Protein Data Bank format (.pdb) [parser: ase]</option>
-                        <option value="xyz-ase">XYZ File (.xyz) [parser: ase]</option>
-                        <option value="cif-ase">CIF File (.cif) [parser: ase]</option>
-                        <option value="cif-pymatgen">CIF File (.cif) [parser: pymatgen]</option>
+                        {# First put the formats the user specified, if existing #}
+                        {% for parser_name in config.get('upload_structure_block_order', []) %}
+                            {% if parser_name in upload_structure_block_known_formats %}
+                            <option value="{{ parser_name }}">{{ upload_structure_block_known_formats[parser_name] }}</option>
+                            {% endif %}
+                        {% endfor %}
+
+                        {# Then put any remaining format #}
+                        {% for parser_name in upload_structure_block_known_formats %}
+                            {% if parser_name not in config.get('upload_structure_block_order', []) %}
+                                <option value="{{ parser_name }}">{{ upload_structure_block_known_formats[parser_name] }}</option>
+                            {% endif %}
+                        {% endfor %}
                     </select>
                 </div>
             </div>

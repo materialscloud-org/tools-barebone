@@ -7,6 +7,7 @@ http://localhost:5000 from a browser. Otherwise, read the instructions
 in README_DEPLOY.md to deploy on a Apache server.
 """
 import flask
+import datetime
 import io
 import json
 import os
@@ -36,6 +37,9 @@ app = flask.Flask(__name__, static_folder=static_folder)
 app.use_x_sendfile = True
 app.wsgi_app = ReverseProxied(app.wsgi_app)
 app.secret_key = get_secret_key()
+# When sending static files, set the max-age to 10 seconds only (for longer, a request will be done to check the actual
+# file timestamp, and decide whether to reload based on that)
+app.send_file_max_age_default = datetime.timedelta(seconds=10)
 
 
 def get_visualizer_select_template(request):

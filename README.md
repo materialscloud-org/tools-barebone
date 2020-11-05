@@ -113,6 +113,10 @@ about_section_title: "About this new tool"
 # as shown later.
 use_upload_structure_block: True
 
+# If you have an upload block and want to have some parsers first, you can specify their internal
+# name as a list. Those from the list will be shown first (NOTE! if the name is unknown, it is ignored).
+# All the remaining ones, if any, are shown afterwards in a default order.
+upload_structure_block_order: ['cif-pymatgen', 'xsf-ase']
 
 templates:
   how_to_cite: "how_to_cite.html"

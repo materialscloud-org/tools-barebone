@@ -3,6 +3,7 @@ Most of the functions needed by the web service are here.
 In run_app.py we just keep the main web logic.
 """
 import os
+from collections import OrderedDict
 
 import yaml
 import flask
@@ -14,6 +15,20 @@ from conf import (
     user_static_folder,
     config_file_path,
     ConfigurationError,
+)
+
+# Key: internal value; value: string to show
+upload_structure_block_known_formats = OrderedDict(
+    {
+        "qeinp-qetools": "Quantum ESPRESSO input [parser: qe-tools]",
+        "vasp-ase": "VASP POSCAR [parser: ase]",
+        "xsf-ase": "XCrySDen (.xsf) [parser: ase]",
+        "castep-ase": "CASTEP (.cell) [parser: ase]",
+        "pdb-ase": "Protein Data Bank format (.pdb) [parser: ase]",
+        "xyz-ase": "XYZ File (.xyz) [parser: ase]",
+        "cif-ase": "CIF File (.cif) [parser: ase]",
+        "cif-pymatgen": "CIF File (.cif) [parser: pymatgen]",
+    }
 )
 
 
@@ -112,7 +127,11 @@ def get_config():
     # set defaults
     config = set_config_defaults(config)
 
-    return {"config": config, "include_pages": parse_config(config)}
+    return {
+        "config": config,
+        "include_pages": parse_config(config),
+        "upload_structure_block_known_formats": upload_structure_block_known_formats,
+    }
 
 
 static_bp = Blueprint("static", __name__, url_prefix="/static")

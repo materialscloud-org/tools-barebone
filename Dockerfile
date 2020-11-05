@@ -10,7 +10,7 @@
 ##
 # Actually, I use passenger-full that already has python
 # https://github.com/phusion/passenger-docker#using
-FROM phusion/passenger-customizable:1.0.9
+FROM phusion/passenger-customizable:1.0.11
 
 LABEL maintainer="Materials Cloud <developers@materialscloud.org>"
 
@@ -92,6 +92,7 @@ RUN echo "import sys" > $SP_WSGI_FILE && \
 
 
 # Set proper permissions for user 'app' who will be used to run the service
+RUN chmod -R o+rX $HOME
 RUN chown -R app:app $HOME
 
 # Final cleanup, in case it's needed

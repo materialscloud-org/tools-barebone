@@ -211,7 +211,7 @@ def get_structure_tuple(  # pylint: disable=too-many-locals
                 )
             # avoid generator expressions by explicitly requesting tuple/list
             cell = list(
-                tuple(float(extra_data["xyzCellVec" + v + a][0]) for a in "xyz")
+                tuple(float(extra_data["xyzCellVec" + v + a]) for a in "xyz")
                 for v in "ABC"
             )
 

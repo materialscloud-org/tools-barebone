@@ -260,7 +260,7 @@ def process_structure():
     # If we are here, the file was retrieved.
     # It will contain a tuple of length three, with:
     # - the 3x3 unit cell (in angstrom)
-    # - a Nx3 list of atomic coordinates (in angstrom)
+    # - a Nx3 list of atomic coordinates (in fractional coordinates)
     # - a list of integer atomic numbers of length N
 
     # As an example, we just create a string representation of the JSON

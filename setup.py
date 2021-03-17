@@ -36,7 +36,7 @@ setup(
         "numpy>=1.16",
         "pyyaml>=5.3.1",
         "ase>=3",
-        "qe-tools==2.0.0rc1",
+        "qe-tools==2.0.0rc2",
         "pymatgen>=2019.7.2",
     ],
     extras_require={

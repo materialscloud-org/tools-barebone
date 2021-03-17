@@ -224,7 +224,9 @@ def get_structure_tuple(  # pylint: disable=too-many-locals
         return tuple_from_pymatgen(pmgstructure)
     if fileformat == "qeinp-qetools":
         fileobject.seek(0)
-        pwfile = qe_tools.parsers.PwInputFile(fileobject.read())
+        pwfile = qe_tools.parsers.PwInputFile(
+            fileobject.read(), validate_species_names=True
+        )
         pwparsed = pwfile.structure
 
         cell = pwparsed["cell"]

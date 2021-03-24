@@ -223,8 +223,11 @@ def get_structure_tuple(  # pylint: disable=too-many-locals
         pmgstructure = PMGCifParser(fileobject).get_structures()[0]
         return tuple_from_pymatgen(pmgstructure)
     if fileformat == "qeinp-qetools":
-        pwfile = qe_tools.PwInputFile(fileobject)
-        pwparsed = pwfile.get_structure_from_qeinput()
+        fileobject.seek(0)
+        pwfile = qe_tools.parsers.PwInputFile(
+            fileobject.read(), validate_species_names=True
+        )
+        pwparsed = pwfile.structure
 
         cell = pwparsed["cell"]
         rel_position = np.dot(pwparsed["positions"], np.linalg.inv(cell)).tolist()

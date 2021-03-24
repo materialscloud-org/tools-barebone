@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   precommit:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
       - uses: actions/checkout@v1
@@ -24,7 +24,7 @@ jobs:
           pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
 
   dockertests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
       - uses: actions/checkout@v1

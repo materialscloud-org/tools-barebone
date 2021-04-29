@@ -6,7 +6,7 @@ from functools import wraps, update_wrapper
 import flask
 
 # tools-barebone version
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 
 # This flag changes the style of the webpage (CSS, etc.)
 # and decides whether some of the headers (e.g. the App title) and the

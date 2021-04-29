@@ -32,12 +32,12 @@ setup(
     author="Materials Cloud team",
     version=version,
     install_requires=[
-        "Flask>=1",
-        "numpy>=1.16",
-        "pyyaml>=5.3.1",
-        "ase>=3",
+        "Flask==1.1.2",
+        "numpy==1.19.4",
+        "pyyaml==5.4",
+        "ase==3.21.1",
         "qe-tools==2.0.0rc2",
-        "pymatgen>=2019.7.2",
+        "pymatgen==2020.10.20",
     ],
     extras_require={
         "dev": [

@@ -50,7 +50,7 @@ RUN apt-get update \
 ENV HOME /home/app
 
 # Run this as sudo to replace the version of pip
-RUN pip2 install -U 'pip>=10' setuptools wheel
+RUN pip2 install -U 'pip==20.0.2' 'setuptools==46.1.3' wheel
 
 # install rest of the packages as normal user (app, provided by passenger)
 USER app

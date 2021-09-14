@@ -46,9 +46,9 @@ app.send_file_max_age_default = datetime.timedelta(seconds=10)
 def get_visualizer_select_template(request):
     if get_style_version(request) == "lite":
         return "visualizer_select_lite.html"
-    if get_style_version(request) == "full":
-        return "visualizer_select_full.html"
-    return "visualizer_select.html"
+    if get_style_version(request) == "standard":
+        return "visualizer_select.html"
+    return "visualizer_select_full.html"
 
 
 @app.route("/")

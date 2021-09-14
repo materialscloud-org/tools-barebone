@@ -14,6 +14,8 @@ __version__ = "1.1.3"
 #
 # Options:
 # - 'lite': simple version, not title, no info description, different CSS
+# - 'full': full version containing the Materials Cloud header bar and the
+#           script for collecting statistics with Plausible
 # - anything else: default
 #
 # How to pass: with Apache, when forwarding, in a ReverseProxy section, add
@@ -22,6 +24,7 @@ def get_style_version(request):
     """Return a string with the 'style' for the app.
 
     - 'lite' means to remove headers and other information.
+    - 'full' means to add the header bar and Plausible script.
     - anything else is at the moment to be considered as the default.
     """
     return request.environ.get("HTTP_X_APP_STYLE", "")

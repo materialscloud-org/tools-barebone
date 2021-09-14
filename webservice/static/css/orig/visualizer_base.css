@@ -84,12 +84,3 @@ table.center {
   background: #ccc;
   color: #000;
 }
-
-.btn {
-  letter-spacing: normal;
-  text-transform: none;
-}
-
-.alert {
-  text-align: inherit;
-}

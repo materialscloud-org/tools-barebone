@@ -56,8 +56,7 @@ def input_data():
     """
     Main view, input data selection and upload
     """
-    # template = get_visualizer_select_template(flask.request)
-    template = "visualizer_select_full.html"
+    template = get_visualizer_select_template(flask.request)
     if template == "visualizer_select_full.html":
         tvars = header.template_vars
         tvars["css_classes"]["archive"] = ""

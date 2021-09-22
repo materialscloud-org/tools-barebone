@@ -87,8 +87,7 @@ COPY ./webservice/ webservice
 
 # Get Materials Cloud header
 RUN git clone https://github.com/materialscloud-org/frontend-theme.git && \
-    cp -r frontend-theme/header/jinja/app/* webservice/ && \
-    rm webservice/static/js/jquery.min.js
+    cp -r frontend-theme/header/jinja/app/* webservice/
 
 # Create a proper wsgi file
 ENV SP_WSGI_FILE=webservice/app.wsgi

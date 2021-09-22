@@ -1,0 +1,64 @@
+<div id='container'>
+    <div id='maintitle'>
+        {% block pagetitle %}
+            <h1 style="text-align: center;">{{ config["page_title"] }}</h1>
+        {% endblock %}
+    </div>
+
+    {% block flashedmessages %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div id="warnings" class="alert alert-danger">
+                    Warning:
+                    <ul class="flashes">
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+    {% endblock %}
+
+    <div id="about">
+        <div id="accordion">
+            <h2>{{ config["about_section_title"] }}</h2>
+            <div>
+            {% if include_pages['about'] is not none %}
+                {% include include_pages['about'] %}
+            {% else %}
+                <div class="alert alert-danger">
+                <p>About section is a compulsory section and you can not set it to null in configuration file.</p>
+            </div>
+            {% endif %}
+            </div>
+            {% for additional_entry in include_pages["additional_accordion_entries"] %}
+            <h2>{{ additional_entry.header }}</h2>
+                <div>
+                {% include additional_entry.template_page %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if config.get("use_upload_structure_block", True) %}
+      {% include "visualizer_select_structure.html" %}
+    {% endif %}
+    {% include include_pages['select_content'] %}
+
+
+    {% if include_pages['how_to_cite'] is not none %}
+        <div id='citations'>
+            <h2>How to cite</h2>
+            {% include include_pages['how_to_cite'] %}
+        </div>
+    {% endif %}
+
+</div>
+
+
+{% for jsfile in config["custom_js_files"]["input_data"] %}
+    <script src="{{ jsfile }}"></script>
+{% endfor %}
+
+<div style ="position: relative" data-iframe-height></div>

@@ -10,7 +10,7 @@
 ##
 # Actually, I use passenger-full that already has python
 # https://github.com/phusion/passenger-docker#using
-FROM phusion/passenger-customizable:1.0.11
+FROM phusion/passenger-customizable:2.0.0
 
 LABEL maintainer="Materials Cloud <developers@materialscloud.org>"
 
@@ -50,7 +50,7 @@ RUN apt-get update \
 ENV HOME /home/app
 
 # Run this as sudo to replace the version of pip
-RUN pip3 install -U 'pip>=10' setuptools wheel
+#RUN pip3 install -U 'pip>=10' setuptools wheel
 
 # Setup apache
 # Disable default apache site, enable tools site; also
@@ -61,7 +61,7 @@ RUN a2enmod wsgi && a2enmod xsendfile && \
 
 # Activate apache at startup
 RUN mkdir /etc/service/apache
-RUN mkdir /var/run/apache2
+#RUN mkdir /var/run/apache2
 ADD ./.docker_files/apache_run.sh /etc/service/apache/run
 
 # Web
@@ -89,7 +89,6 @@ ENV SP_WSGI_FILE=webservice/app.wsgi
 RUN echo "import sys" > $SP_WSGI_FILE && \
     echo "sys.path.insert(0, '/home/app/code/webservice')" >> $SP_WSGI_FILE && \
     echo "from run_app import app as application" >> $SP_WSGI_FILE
-
 
 # Set proper permissions for user 'app' who will be used to run the service
 RUN chmod -R o+rX $HOME

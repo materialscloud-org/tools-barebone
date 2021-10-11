@@ -25,7 +25,7 @@ import logging.handlers
 logger = logging.getLogger("tools-app")
 logHandler = logging.handlers.TimedRotatingFileHandler(
     os.path.join(os.path.split(os.path.realpath(__file__))[0], "logs", "requests.log"),
-    when="midnight",
+    when="midnight", backupCount=14
 )
 formatter = logging.Formatter("[%(asctime)s]%(levelname)s-%(funcName)s ^ %(message)s")
 logHandler.setFormatter(formatter)

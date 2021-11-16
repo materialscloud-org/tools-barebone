@@ -3,6 +3,7 @@ numpy==1.21.2
 pyyaml==5.4
 
 # The following are needed for the structure importer
+packaging==20.9
 ase==3.21.1
 qe-tools==2.0.0rc2
 pymatgen==2020.10.20

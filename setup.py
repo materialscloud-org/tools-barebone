@@ -45,7 +45,7 @@ setup(
             "pylint==2.4.4",
             "prospector==1.2.0",
             "pytest==5.3.5",
-            "pytest-selenium==1.17.0",
+            "pytest-selenium==2.0.1",
             "pytest-regressions==2.0.0",
         ]
     },

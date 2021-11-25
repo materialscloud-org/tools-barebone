@@ -17,6 +17,7 @@ from web_module import static_bp, user_static_bp, get_secret_key, get_config
 from tools_barebone import get_style_version, ReverseProxied
 from tools_barebone.structure_importers import get_structure_tuple, UnknownFormatError
 from conf import static_folder
+import header
 
 import logging
 import logging.handlers
@@ -46,7 +47,9 @@ app.send_file_max_age_default = datetime.timedelta(seconds=10)
 def get_visualizer_select_template(request):
     if get_style_version(request) == "lite":
         return "visualizer_select_lite.html"
-    return "visualizer_select.html"
+    if get_style_version(request) == "standard":
+        return "visualizer_select.html"
+    return "visualizer_select_full.html"
 
 
 @app.route("/")
@@ -54,9 +57,13 @@ def input_data():
     """
     Main view, input data selection and upload
     """
-    return flask.render_template(
-        get_visualizer_select_template(flask.request), **get_config()
-    )
+    template = get_visualizer_select_template(flask.request)
+    if template == "visualizer_select_full.html":
+        tvars = header.template_vars
+        tvars["css_classes"]["archive"] = ""
+        tvars["css_classes"]["work"] = "active"
+        return flask.render_template(template, **get_config(), **tvars)
+    return flask.render_template(template, **get_config())
 
 
 # Register blueprints

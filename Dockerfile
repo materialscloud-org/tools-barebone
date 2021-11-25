@@ -84,7 +84,12 @@ RUN pip3 install -e .
 
 # Actually, don't download, but get the code directly from this repo
 COPY ./webservice/ webservice
-# Create a proper wsgi file file
+
+# Get Materials Cloud header
+RUN git clone https://github.com/materialscloud-org/frontend-theme.git && \
+    cp -r frontend-theme/header/jinja/app/* webservice/
+
+# Create a proper wsgi file
 ENV SP_WSGI_FILE=webservice/app.wsgi
 RUN echo "import sys" > $SP_WSGI_FILE && \
     echo "sys.path.insert(0, '/home/app/code/webservice')" >> $SP_WSGI_FILE && \

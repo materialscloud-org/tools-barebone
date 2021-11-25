@@ -6,15 +6,19 @@ from functools import wraps, update_wrapper
 import flask
 
 # tools-barebone version
-__version__ = "1.2.0"
+__version__ = "1.3.0"
 
 # This flag changes the style of the webpage (CSS, etc.)
-# and decides whether some of the headers (e.g. the App title) and the
-# description of what app can do should appear or not
+# and decides whether some of the headers (e.g. the App title or the
+# Materials Cloud header bar) and the description of what the app can do
+# should appear or not
 #
 # Options:
 # - 'lite': simple version, not title, no info description, different CSS
-# - anything else: default
+# - 'standard': standard version
+# - anything else: default, full version containing the Materials Cloud
+#                  header bar and the script for collecting statistics with
+#                  Plausible
 #
 # How to pass: with Apache, when forwarding, in a ReverseProxy section, add
 #   RequestHeader set X-App-Style lite
@@ -22,7 +26,9 @@ def get_style_version(request):
     """Return a string with the 'style' for the app.
 
     - 'lite' means to remove headers and other information.
-    - anything else is at the moment to be considered as the default.
+    - 'standard' is the standard version with the title and info.
+    - anything else is adding the header bar and Plausible script.
+    This is the default option.
     """
     return request.environ.get("HTTP_X_APP_STYLE", "")
 

@@ -89,6 +89,8 @@ touch ack.html                              # add acknowledgement text here
 touch about.html                            # add information about this tool here
 touch how_to_cite.html                      # add tool citation here
 touch additional_content.html               # additional functionality if any, otherwise empty file
+touch upload_structure_additional_content.html
+touch visualizer_select_example.html
 
 ```
 
@@ -215,7 +217,7 @@ blueprint = flask.Blueprint("compute", __name__, url_prefix="/compute")
 ```
 
 You can then add your views.
-If you are using the structure upload block (see comments in the description of the `config.yaml` section), you will need to define at least a `/compute/process_structure/` endpoint. Here is a minimal working example, that you can use as a starting point. Note that here we are going to use the parsing functionality provided directly by the `tools-barebone` package.
+If you are using the structure upload block (see comments in the description of the `config.yaml` section), you will need to define at least a `/compute/process_structure/` endpoint. Here is a minimal working example, that you can use as a starting point by appending to the `compute/__init__.py` file. Note that here we are going to use the parsing functionality provided directly by the `tools-barebone` package.
 
 ```python
 from tools_barebone.structure_importers import get_structure_tuple, UnknownFormatError

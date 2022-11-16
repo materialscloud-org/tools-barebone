@@ -46,6 +46,7 @@ setup(
             "prospector==1.2.0",
             "pytest==5.3.5",
             "pytest-selenium==2.0.1",
+            "selenium~=3.0",
             "pytest-regressions==2.0.0",
         ]
     },

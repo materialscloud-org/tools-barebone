@@ -70,7 +70,12 @@ def logme(logger, *args, **kwargs):
 
 
 def generate_log(  # pylint: disable=too-many-arguments
-    filecontent, fileformat, request, call_source, reason, extra=None,
+    filecontent,
+    fileformat,
+    request,
+    call_source,
+    reason,
+    extra=None,
 ):
     """
     Given a string with the file content, a file format, a Flask request and

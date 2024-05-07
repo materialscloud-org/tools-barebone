@@ -1,16 +1,6 @@
-# Use phusion/baseimage as base image. To make your builds
-# reproducible, make sure you lock down to a specific version, not
-# to `latest`! See
-# https://github.com/phusion/baseimage-docker/blob/master/Changelog.md
-# for a list of version numbers.
-# Note also that we use phusion because, as explained on the
-# http://phusion.github.io/baseimage-docker/ page, it automatically
-# contains and starts all needed services (like logging), it
-# takes care of sending around signals when stopped, etc.
-##
-# Actually, I use passenger-full that already has python
-# https://github.com/phusion/passenger-docker#using
-FROM phusion/passenger-customizable:2.0.0
+# Use phusion/passenger image that is a good starting point for webapps
+# see also: https://phusion.github.io/baseimage-docker
+FROM phusion/passenger-customizable:2.6.2
 
 LABEL maintainer="Materials Cloud <developers@materialscloud.org>"
 
@@ -22,11 +12,8 @@ ENV HOME /root
 
 # If you're using the 'customizable' variant, you need to explicitly opt-in
 # for features. Uncomment the features you want:
-#
-    #   Build system and git.
-    #   Python support (2.7 and 3.x - it is 3.6.x in this ubuntu 18.04)
-RUN /pd_build/utilities.sh && \
-    /pd_build/python.sh
+
+RUN /pd_build/python.sh 3.10
 
 ##########################################
 ############ Installation Setup ##########
@@ -49,15 +36,13 @@ RUN apt-get update \
 # set $HOME
 ENV HOME /home/app
 
-# Run this as sudo to replace the version of pip
-#RUN pip3 install -U 'pip>=10' setuptools wheel
-
 # Setup apache
 # Disable default apache site, enable tools site; also
 # enable needed modules
 ADD ./.docker_files/apache-site.conf /etc/apache2/sites-available/app.conf
-RUN a2enmod wsgi && a2enmod xsendfile && \
-    a2dissite 000-default && a2ensite app
+RUN a2enmod wsgi && a2enmod xsendfile \
+    && a2dissite 000-default && a2ensite app \
+    && a2enmod headers
 
 # Activate apache at startup
 RUN mkdir /etc/service/apache
@@ -75,12 +60,12 @@ ADD ./.docker_files/create_secret_key.sh /etc/my_init.d/create_secret_key.sh
 RUN mkdir -p $HOME/code/
 WORKDIR $HOME/code/
 COPY ./requirements.txt requirements.txt
-RUN pip3 install -r $HOME/code/requirements.txt
+RUN pip install -r $HOME/code/requirements.txt --verbose
 
 COPY ./setup.py setup.py
 COPY README.md README.md
 COPY ./tools_barebone/ tools_barebone
-RUN pip3 install -e .
+RUN pip install -e .
 
 # Actually, don't download, but get the code directly from this repo
 COPY ./webservice/ webservice

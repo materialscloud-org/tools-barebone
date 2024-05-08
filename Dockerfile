@@ -1,6 +1,6 @@
 # Use phusion/passenger image that is a good starting point for webapps
 # see also: https://phusion.github.io/baseimage-docker
-FROM phusion/passenger-customizable:2.6.2
+FROM phusion/passenger-customizable:3.0.3
 
 LABEL maintainer="Materials Cloud <developers@materialscloud.org>"
 
@@ -26,10 +26,11 @@ RUN /pd_build/python.sh 3.10
 ## NOTE: Here and below we install everything with python3
 RUN apt-get update \
     && apt-get -y install \
-    python3-pip \
     apache2 \
     libapache2-mod-xsendfile \
     libapache2-mod-wsgi-py3 \
+    python3-pip \
+    && pip install pip==23.3.2 \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get clean all
 
@@ -59,13 +60,10 @@ ADD ./.docker_files/create_secret_key.sh /etc/my_init.d/create_secret_key.sh
 # Download code
 RUN mkdir -p $HOME/code/
 WORKDIR $HOME/code/
-COPY ./requirements.txt requirements.txt
-RUN pip install -r $HOME/code/requirements.txt --verbose
-
-COPY ./setup.py setup.py
+COPY ./pyproject.toml pyproject.toml
 COPY README.md README.md
-COPY ./tools_barebone/ tools_barebone
-RUN pip install -e .
+COPY ./src/ src
+RUN pip install . --verbose --ignore-installed blinker
 
 # Actually, don't download, but get the code directly from this repo
 COPY ./webservice/ webservice

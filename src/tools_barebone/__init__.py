@@ -1,12 +1,17 @@
 """tools-barebone module."""
+
 import datetime
+import importlib.metadata
 import json
-from functools import wraps, update_wrapper
+from functools import update_wrapper, wraps
 
 import flask
 
-# tools-barebone version
-__version__ = "1.3.0"
+try:
+    __version__ = importlib.metadata.version("tools_barebone")
+except importlib.metadata.PackageNotFoundError:
+    __version__ = "unknown"
+
 
 # This flag changes the style of the webpage (CSS, etc.)
 # and decides whether some of the headers (e.g. the App title or the

@@ -1,11 +1,11 @@
 import json
 import os
-
-import pytest
-import numpy as np
-
-from selenium.webdriver.support.ui import Select
 from urllib.parse import urlparse
+
+import numpy as np
+import pytest
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
 
 # Note: you need to build docker and start it with
 # ./admin-tools/build-docker.sh && ./admin-tools/run-docker.sh
@@ -22,7 +22,7 @@ def test_barebone_input_data_page(selenium):
     selenium.get(TEST_URL)
 
     assert selenium.title == "Materials Cloud Tool"
-    format_selector = selenium.find_element_by_id("fileformatSelect")
+    format_selector = selenium.find_element("id", "fileformatSelect")
 
     # This is not a complete list, but at least these should be present
     expected_importer_names = set(
@@ -37,11 +37,11 @@ def test_barebone_input_data_page(selenium):
 
     # If the difference is not empty, at least one of the expected importer names is not there!
     assert not expected_importer_names.difference(
-        option.text for option in format_selector.find_elements_by_tag_name("option")
+        option.text for option in format_selector.find_elements(By.TAG_NAME, "option")
     )
 
     # Get one of the input forms of the XYZ format
-    xyz_bx_input = selenium.find_element_by_name("xyzCellVecBx")
+    xyz_bx_input = selenium.find_element("name", "xyzCellVecBx")
 
     # The XYZ inputs should be hidden
     Select(format_selector).select_by_value("xsf-ase")
@@ -79,11 +79,11 @@ def get_file_examples(subfolder):
 def submit_structure(selenium, file_abspath, parser_name):
     """Given a selenium driver, submit a file."""
     # Load file
-    file_upload = selenium.find_element_by_name("structurefile")
+    file_upload = selenium.find_element("name", "structurefile")
     file_upload.send_keys(file_abspath)
 
     # Select format
-    format_selector = selenium.find_element_by_id("fileformatSelect")
+    format_selector = selenium.find_element("id", "fileformatSelect")
     Select(format_selector).select_by_value(parser_name)
 
     # Check if there is additional extra information to put in the form
@@ -99,15 +99,12 @@ def submit_structure(selenium, file_abspath, parser_name):
         with open(extra_file) as fhandle:
             extra_data = json.load(fhandle)
         for extra_name, extra_value in extra_data.items():
-            selenium.find_element_by_xpath(
-                "//input[@name='{}']".format(extra_name)
-            ).send_keys(str(extra_value))
+            el = selenium.find_element(
+                By.XPATH, "//input[@name='{}']".format(extra_name)
+            )
+            print(el.send_keys(extra_value))
 
-    # Submit form
-    # selenium.find_element_by_xpath("//input[@value='Calculate my structure']").click()
-    selenium.find_element_by_xpath(
-        "//form[@action='compute/process_structure/']"
-    ).submit()
+    selenium.find_element(By.XPATH, "//input[@value='Calculate my structure']").click()
 
 
 @pytest.mark.nondestructive
@@ -125,7 +122,7 @@ def test_send_valid_structure(selenium, num_regression, parser_name, file_relpat
     # We should be in the /compute/process_structure/ page
     assert urlparse(selenium.current_url).path == "/compute/process_structure/"
 
-    structure_json = selenium.find_element_by_id("structureJson").text
+    structure_json = selenium.find_element("id", "structureJson").text
     structure_data = json.loads(structure_json)
     # Only 1D arrays are allowed, I flatten them (order is preserved). Also, convert to float as the
     # library does not manage well integers
@@ -152,6 +149,6 @@ def test_send_failing_structure(selenium, parser_name, file_relpath):
     assert urlparse(selenium.current_url).path == "/"
 
     # The warning div should be there
-    warning_div_text = selenium.find_element_by_id("warnings").text
+    warning_div_text = selenium.find_element("id", "warnings").text
 
     assert "I wasn't able to load your file" in warning_div_text

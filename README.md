@@ -2,7 +2,6 @@
 
 [![Actions Status](https://github.com/materialscloud-org/tools-barebone/workflows/Continuous%20integration/badge.svg)](https://github.com/materialscloud-org/tools-barebone/actions)
 
-
 `tools-barebone` is a framework to develop and deploy small web applications,
 implemented in Python using Flask Jinja2 templates.
 
@@ -31,8 +30,8 @@ Here we briefly explain how the `tools-barebone` template (shown
 on the left side of the figure below) can be extended to develop a new tool called `custom-tool`
 (shown on the right side).
 
-|                                            Tools barebone template                                             |                                               New tool template                                               |
-| :------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------: |
+|                                          Tools barebone template                                          |                                            New tool template                                             |
+| :-------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------: |
 | ![](https://github.com/materialscloud-org/tools-barebone/blob/master/misc/screenshots/tools-barebone.png) | ![](https://github.com/materialscloud-org/tools-barebone/blob/master/misc/screenshots/tools-example.png) |
 
 ### 1. Get the most recent `tools-barebone` docker image from DockerHub
@@ -40,19 +39,23 @@ on the left side of the figure below) can be extended to develop a new tool call
 Browse to the [Tags page on DockerHub for materialscloud/tools-barebone](https://hub.docker.com/repository/docker/materialscloud/tools-barebone/tags?page=1) and find the most recent tagged version (in the form `X.Y.Z`, e.g. 1.0.0). You can also use the `latest` tag, but we strongly suggest that you use a pinned version, rather than latest: this will ensure that your tool will continue to work also if future, incompatible versions are released.
 
 Then, run the following command to get the image:
+
 ```
 docker pull materialscloud/tools-barebone
 ```
 
 You can try to see if everything works by running a container from this image, e.g. by running
+
 ```
 docker run -p 8090:80 materialscloud/tools-barebone:latest
 ```
+
 and then connecting to http://localhost:8090 with your browser.
 
 You should see a website similar to the image on the left above.
 
 If you want, you can also install the tools-barebone package (use the same version as the one you picked above) using
+
 ```
 pip install tools-barebone==X.Y.Z
 ```
@@ -144,7 +147,7 @@ The snippet below shows a minimal
 The commands that you need and that are specific to `custom-tool` can be added at the bottom of the file.
 Remember to replace the `LABEL` string.
 
-````
+```
 FROM materialscloud/tools-barebone:X.Y.Z
 
 LABEL maintainer="Developer Name <developer.email@xxx.yy>"
@@ -179,7 +182,7 @@ COPY ./compute/ /home/app/code/webservice/compute/
 
 # Set proper permissions on files just copied
 RUN chown -R app:app /home/app/code/webservice/
-````
+```
 
 ### 5. Test it!
 
@@ -194,22 +197,27 @@ docker build -t custom-tools . && docker run -p 8091:80 --rm --name=custom-tools
 You can now connect to http://localhost:8091 and check if your results starts to look like the right panel of the images above, and it contains the text that you were expecting.
 
 ### 6. Fine tune the text
+
 Before looking into the backend python logic, you can now fine-tune the templates that you have written before. Change the `config.yaml` and the various templates. Then, run again the docker build+run commands of the previous sections, and refresh your browser until you are happy with the results.
 
 ### 7. Backend implementation
+
 Now it is time to work on the python backend implementation.
 
 `tools-barebone` uses the [Flask](https://flask.palletsprojects.com/) framework, so you might want to look into its documentation to discover all advanced features. Here we describe only how to make a minimal working tool.
 
 You will put the code in the `compute` folder you created before. You can add any number of python files in it, and load them using
+
 ```
 from compute.XXX import YYY
 ```
+
 (the `compute` folder will be in the python path).
 
 You will need however to have some minimal content in the `compute/__init__.py` file.
 
 In particular, you will need at least to define a `blueprint` as follows:
+
 ```python
 import flask
 
@@ -281,20 +289,34 @@ def process_structure():
     }
     return flask.render_template("user_templates/custom-tool.html", **data_for_template)
 ```
+
 In order to make it work, the last step is to create a `user_templates/custom-tool.html` file, e.g. with the following minimal content:
+
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Add CSS, JS, ... here, e.g, these from tools-barebone;  -->
-    <link href="../../static/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../../static/css/jquery-ui.1.12.1.min.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/css/visualizer_base.min.css"/>
-    <link rel="stylesheet" type="text/css" href="../../static/css/visualizer_input.min.css"/>
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../../static/css/jquery-ui.1.12.1.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../../static/css/visualizer_base.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../../static/css/visualizer_input.min.css"
+    />
     <script src="../../static/js/jquery-3.1.0.min.js"></script>
     <script src="../../static/js/jquery-ui.1.12.1.min.js"></script>
 
@@ -304,37 +326,37 @@ In order to make it work, the last step is to create a `user_templates/custom-to
 
     <!-- Keep this, it's needed to make the tool embeddable in an iframe; it's provided by tools-barebone -->
     <script src="../../static/js/iframeResizer.contentWindow.min.js"></script>
-</head>
+  </head>
 
-<body>
-<div id='container'>
-    <div id='maintitle'>
+  <body>
+    <div id="container">
+      <div id="maintitle">
         <h1 style="text-align: center;">Tools-example return page</h1>
+      </div>
+
+      <h2>Successfully parsed structure tuple</h2>
+      <p>
+        <code id="structureJson"> {{structure_json}} </code>
+      </p>
     </div>
 
-    <h2>Successfully parsed structure tuple</h2>
-    <p>
-        <code id='structureJson'>
-{{structure_json}}
-        </code>
-    </p>
-</div>
-
-<!-- Important: leave this tag as the *very last* in your page, just before the end of the body -->
-<!-- It is needed to properly detect the size of the iframe -->
-<div style ="position: relative" data-iframe-height></div>
-</body>
+    <!-- Important: leave this tag as the *very last* in your page, just before the end of the body -->
+    <!-- It is needed to properly detect the size of the iframe -->
+    <div style="position: relative" data-iframe-height></div>
+  </body>
 </html>
 ```
 
 You can now build and run again the container, and you should see the parsed results, in JSON form, in the page once you upload a structure.
 
 ### 8. Additional views
+
 You can now continue adding views to your application, inside the blueprint. Check the Flask documentation for more information. Here, we just show an example to create a view for some Terms of use.
 
 - First create a `user_views` folder in the top folder of your application, and create a file `termsofuse.html` inside it. Complete it with the full HTML code that you want to send to the user. Rembember also to add the correct `COPY` line to the `Dockerfile`.
 
 - Then, create the Flask view for it, in the `compute/__init__.py` file:
+
 ```python
 import os
 
@@ -353,15 +375,22 @@ def termsofuse():
 The page will be accessible under the url `/compute/termsofuse/`.
 
 Finally, if e.g. you want to show a link to it in the Structure Upload block, right before the Submit button, you can add the following line in the `templates` dictionary:
+
 ```yaml
 templates:
   # ...
   upload_structure_additional_content: "upload_structure_additional_content.html"
 ```
+
 and create a file `upload_structure_additional_content.html` in the `user_templates` folder, e.g. with the following content:
+
 ```html
-<div class='row' style="text-align:center">
-    <p class='small'>By continuing, you agree with the <a href="../compute/termsofuse/" target="_blank">terms of use</a> of this service.</p>
+<div class="row" style="text-align:center">
+  <p class="small">
+    By continuing, you agree with the
+    <a href="../compute/termsofuse/" target="_blank">terms of use</a> of this
+    service.
+  </p>
 </div>
 ```
 
@@ -374,3 +403,20 @@ For a more advanced tool, you can also check out the [tools-seekpath](https://gi
 
 Here you can see also an example of how the python code in the backend is implemented (check the implementation of the API endpoints inside the `compute` subfolder).
 You can also get inspiration for the setup of tests with pytest, of continuous integration with GitHub actions, on how to setup pre-commit hooks, etc.
+
+# Development
+
+## Running tests
+
+Easiest way to run tests is with the `docker-compose-tests.yml` file, which starts a Selenium Grid/Hub service in the docker container together with a browser. To run tests through this Selenium service, use
+
+```bash
+pytest --driver Remote --capability browserName firefox .
+```
+
+Alternatively, one could set up a browser driver locally (see [pytest-selenium docs](https://pytest-selenium.readthedocs.io/en/latest/index.html)), run just the `tools-barebone` container (`docker-compose.yml`) and use
+
+```
+pytest --driver Chrome .
+pytest --driver Firefox .
+```

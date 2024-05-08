@@ -1,0 +1,26 @@
+version: "3"
+services:
+  tools-barebone:
+    build: .
+    ports:
+      - "8090:80"
+    container_name: tools-barebone-instance
+    image: tools-barebone
+
+  selenium-hub:
+    image: selenium/hub:4.20.0-20240505
+    container_name: selenium-hub
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+
+  firefox:
+    image: selenium/node-firefox:4.20.0-20240505
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=localhost
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    network_mode: host

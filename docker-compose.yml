@@ -1,8 +1,8 @@
-version: '3'
+version: "3"
 services:
   tools-barebone:
     build: .
     ports:
-     - "8090:80"
+      - "8090:80"
     container_name: tools-barebone-instance
     image: tools-barebone

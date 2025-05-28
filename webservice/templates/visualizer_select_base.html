@@ -20,6 +20,8 @@
     <script src="static/js/jquery-3.1.0.min.js"></script>
     <script src="static/js/jquery-ui.1.12.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="static/css/jquery-ui.1.12.1.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/materialscloud-org/mc-header@main/header.css" />
+
 
     <title>{{ config["window_title"] }}</title>
 
@@ -51,10 +53,17 @@
 </head>
 
 <body>
-
-{% block mcloud_header %}
+    <script>
+        // Define breadcrumbs **before** header.js loads
+        var breadcrumbsPath = [
+          { name: "Work", link: "https://www.materialscloud.org/work/menu" },
+          { name: "Tools", link: "https://www.materialscloud.org/work/tools/options"},
+          { name: "{{ config['page_title'] }}", link: null }
+        ]
+      </script>
+    <script src="https://cdn.jsdelivr.net/gh/materialscloud-org/mc-header@main/header.js"></script>
+     
     {% include "base.html" %}
-{% endblock %}
 
 </body>
 </html>
